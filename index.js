@@ -127,7 +127,7 @@ var Fetch = (function(_React$Component) {
       value: function fetch(props) {
         var _this2 = this;
 
-        this.update({ data: getCache(props) });
+        this.update({ data: false });
         if (Array.isArray(props.url)) {
           return Promise.all(
             props.url.map(function(url) {
