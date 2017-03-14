@@ -22,7 +22,7 @@ class Fetch extends React.Component {
   }
 
   fetch(props) {
-    this.update({ data: getCache(props) });
+    this.update({ data: false });
     if (Array.isArray(props.url)) {
       return Promise.all(props.url.map(url => global.fetch(url, props.config)))
         .then(results => Promise.all(results.map(res => res.json())))
