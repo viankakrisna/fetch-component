@@ -1,10 +1,9 @@
-import React from "react";
-import isEqual from "lodash/isEqual";
-import ref from "~/state";
+import React from 'react';
+import isEqual from 'lodash/isEqual';
 
 class Fetch extends React.Component {
   state = {
-    data: false
+    data: false,
   };
 
   componentDidMount() {
