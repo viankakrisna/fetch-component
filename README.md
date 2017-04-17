@@ -6,7 +6,7 @@ or
 
 ```yarn add fetch-component```
 
-# example:
+## usage:
 
 ```
 import React from 'react'
@@ -24,3 +24,5 @@ function Hello () {
 
 export default Hello
 ```
+I'm using function as child here. https://medium.com/merrickchristensen/function-as-child-components-5f3920a9ace9
+
