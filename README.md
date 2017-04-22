@@ -6,7 +6,7 @@ or
 
 ```yarn add fetch-component```
 
-## usage:
+## Usage:
 
 ```
 import React from 'react'
