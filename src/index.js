@@ -65,16 +65,16 @@ class Fetch extends React.Component {
 
 	render() {
 		try {
+			if (this.props.children) {
+				return this.props.children(this.state.data, this.state);
+			}
+
 			if (this.state.loading && this.props.onLoading) {
 				return this.props.onLoading();
 			}
 
 			if (this.state.error && this.props.onError) {
 				return this.props.onError(this.state.error, this.fetch);
-			}
-
-			if (this.state.data && this.props.children) {
-				return this.props.children(this.state.data);
 			}
 
 			if (this.state.data && this.props.onSuccess) {
