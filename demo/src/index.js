@@ -4,23 +4,28 @@ import { render } from 'react-dom';
 import Fetch from '../../src';
 
 const Box = props => (
-	<div style={{ float: 'left', width: `${100 / 4}%` }}>
+	<div style={{ float: 'left', width: `${100 / 5}%`, oveflow: 'hidden' }}>
 		{props.children}
 	</div>
 );
 
+const mapList = data => (
+	<ul>
+		{data.map(
+			(post, index) =>
+				(Array.isArray(post)
+					? <li key={index}>{mapList(post)}</li>
+					: <li key={post.id}>
+							{post.title}
+						</li>)
+		)}
+	</ul>
+);
+
 const AsyncList = props => (
 	<Fetch
-		onLoading={() => <p>Loading...</p>}
-		onSuccess={data => (
-			<ul>
-				{data.map(post => (
-					<li key={post.id}>
-						{post.title}
-					</li>
-				))}
-			</ul>
-		)}
+		onLoading={props => <p>Loading {props.url}...</p>}
+		onSuccess={mapList}
 		onError={(error, reload) => (
 			<div>
 				<p>
@@ -38,6 +43,15 @@ const AsyncList = props => (
 
 let Demo = props => (
 	<div>
+		<Box>
+			<h1>Multiple URL</h1>
+			<AsyncList
+				url={[
+					'https://jsonplaceholder.typicode.com/posts',
+					'https://jsonplaceholder.typicode.com/posts',
+				]}
+			/>
+		</Box>
 		<Box>
 			<h1>onSuccess</h1>
 			<AsyncList url={'https://jsonplaceholder.typicode.com/posts'} />
@@ -74,7 +88,11 @@ let Demo = props => (
 		<Box>
 			<h1>With Children</h1>
 			<AsyncList url={'https://jsonplaceholder.typicode.com/posts'}>
-				{data => <pre>{JSON.stringify(data, null, 2)}</pre>}
+				{(data, state, props) => (
+					<pre style={{ whiteSpace: 'pre-wrap' }}>
+						{JSON.stringify(data, null, 2)}
+					</pre>
+				)}
 			</AsyncList>
 		</Box>
 	</div>
