@@ -24,8 +24,19 @@ const mapList = data => (
 
 const AsyncList = props => (
 	<Fetch
-		onLoading={props => <p>Loading {props.url}...</p>}
+		onLoading={(props, cancel) => (
+			<div>
+				<p>Loading {props.url}...</p>
+				<button onClick={e => cancel()}>Cancel?</button>
+			</div>
+		)}
 		onSuccess={mapList}
+		onCancel={(props, reload) => (
+			<div>
+				<p>Canceled</p>
+				<button onClick={e => reload(props)}>Reload?</button>
+			</div>
+		)}
 		onError={(error, reload) => (
 			<div>
 				<p>
@@ -120,6 +131,7 @@ injectStyle(
 		margin: 0;
 		padding: 0;
 		font-family: sans-serif;
+		line-height: 1.4;
 	}	
 `
 );
