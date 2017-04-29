@@ -1,5 +1,7 @@
 # fetch-component
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/viankakrisna/fetch-component.svg)](https://greenkeeper.io/)
+
 ```npm install --save fetch-component```
 
 or 
