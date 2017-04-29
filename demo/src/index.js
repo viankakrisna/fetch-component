@@ -4,7 +4,7 @@ import { render } from 'react-dom';
 import Fetch from '../../src';
 
 const Box = props => (
-	<div style={{ float: 'left', width: `${100 / 5}%`, oveflow: 'hidden' }}>
+	<div style={{ flex: '0 0 20%', padding: '1em' }}>
 		{props.children}
 	</div>
 );
@@ -14,7 +14,7 @@ const mapList = data => (
 		{data.map(
 			(post, index) =>
 				(Array.isArray(post)
-					? <li key={index}>{mapList(post)}</li>
+					? <li key={index}>{index}{mapList(post)}</li>
 					: <li key={post.id}>
 							{post.title}
 						</li>)
@@ -42,14 +42,20 @@ const AsyncList = props => (
 );
 
 let Demo = props => (
-	<div>
+	<div style={{ display: 'flex' }}>
 		<Box>
 			<h1>Multiple URL</h1>
 			<AsyncList
 				url={[
 					'https://jsonplaceholder.typicode.com/posts',
 					'https://jsonplaceholder.typicode.com/posts',
+					'https://jsonplaceholder.typicode.com/posts',
+					'https://jsonplaceholder.typicode.com/posts',
+					'https://jsonplaceholder.typicode.com/posts',
+					'https://jsonplaceholder.typicode.com/posts',
+					'https://jsonplaceholder.typicode.com/posts',
 				]}
+				onLoading={props => <p>Loading {props.url.join(', ')}</p>}
 			/>
 		</Box>
 		<Box>
@@ -99,3 +105,21 @@ let Demo = props => (
 );
 
 render(<Demo />, document.querySelector('#demo'));
+
+const injectStyle = style =>
+	document.head
+		.appendChild(document.createElement('style'))
+		.appendChild(document.createTextNode(style));
+
+injectStyle(
+	`
+	* {
+		box-sizing: border-box;
+	}
+	body {
+		margin: 0;
+		padding: 0;
+		font-family: sans-serif;
+	}	
+`
+);
