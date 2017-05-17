@@ -1,6 +1,8 @@
 import React from 'react';
 import isEqual from 'lodash/isEqual';
 
+const cache = {};
+
 class PromiseComponent extends React.Component {
   state = {
     data: false,
@@ -9,9 +11,19 @@ class PromiseComponent extends React.Component {
   };
 
   getPromise = props => {
-    this.update({ canceled: false, data: false, loading: true, error: false });
+    let hash;
+    if (props.cache) {
+      hash = btoa(JSON.stringify(props));
+    }
+    this.update({
+      canceled: false,
+      data: props.cache ? cache[hash] : false,
+      loading: true,
+      error: false,
+    });
     return props.getPromise(props).then(
       data => {
+        cache[hash] = data;
         this.update({ data, error: false, loading: false });
       },
       error => {
@@ -58,7 +70,7 @@ class PromiseComponent extends React.Component {
         return this.props.children(this.state.data, this.state, this.props);
       }
 
-      if (this.state.loading && this.props.onLoading) {
+      if (!this.state.data && this.state.loading && this.props.onLoading) {
         return this.props.onLoading(this.props, this.handleCancel);
       }
 
@@ -70,7 +82,7 @@ class PromiseComponent extends React.Component {
       }
 
       if (this.state.data && this.props.onSuccess) {
-        return this.props.onSuccess(this.state.data);
+        return this.props.onSuccess(this.state.data, this.retryPromiseWithNewProps);
       }
     } catch (e) {
       return this.props.onError(e, this.retryPromiseWithNewProps);

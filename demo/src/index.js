@@ -9,17 +9,19 @@ const Box = props => (
 	</div>
 );
 
-const mapList = data => (
-	<ul>
+const mapList = props => (data, reload) => (
+	<div><ul>
 		{data.map(
 			(post, index) =>
 				(Array.isArray(post)
-					? <li key={index}>{index}{mapList(post)}</li>
+					? <li key={index}>{index}{mapList(props)(post)}</li>
 					: <li key={post.id}>
 							{post.title}
 						</li>)
 		)}
 	</ul>
+		<button onClick={e => reload(props)}>Reload</button>
+	</div>
 );
 
 const AsyncList = props => (
@@ -30,7 +32,7 @@ const AsyncList = props => (
 				<button onClick={e => cancel()}>Cancel?</button>
 			</div>
 		)}
-		onSuccess={mapList}
+		onSuccess={mapList(props)}
 		onCancel={(props, reload) => (
 			<div>
 				<p>Canceled</p>
@@ -72,6 +74,10 @@ let Demo = props => (
 		<Box>
 			<h1>onSuccess</h1>
 			<AsyncList url={'https://jsonplaceholder.typicode.com/posts'} />
+		</Box>
+		<Box>
+			<h1>Cached</h1>
+			<AsyncList url={'https://jsonplaceholder.typicode.com/posts'} cache />
 		</Box>
 		<Box>
 			<h1>onError</h1>
